@@ -3,7 +3,7 @@
 
 ChildWindow::ChildWindow()
 {
-    //setAttribute(Qt::WA_DeleteOnClose);
+    setAttribute(Qt::WA_DeleteOnClose);
     isUntitle = true;
 }
 
@@ -11,9 +11,12 @@ void ChildWindow::newFile(int idx)
 {
     isUntitle = true;
     curFile = trUtf8("new File%1").arg(idx);
-    setWindowTitle(curFile);
-    //document()->setModified(false);
+
     connect(document(), &QTextDocument::contentsChanged, this, &ChildWindow::thisWindowTextChanged);
+
+    document()->setModified(false);
+    setWindowModified(false);
+    setWindowTitle(currentFileName() + "[*]");
 }
 
 void ChildWindow::thisWindowTextChanged()

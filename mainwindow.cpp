@@ -2,11 +2,14 @@
 #include "ui_mainwindow.h"
 #include "childwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
+MainWindow::MainWindow(/*QWidget *parent*/) :
+//    QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setCentralWidget(ui->mdiArea);
+
+    functionUpdate();
 }
 
 MainWindow::~MainWindow()
@@ -21,7 +24,10 @@ void MainWindow::init()
     ui->actionCopy->setEnabled(false);
     ui->actionPaste->setEnabled(false);
 
-    ui->actionNew->triggered(true);
+    //ui->actionNew->triggered(true);
+
+    //connect(ui->mdiArea->parentWidget(),)
+    connect(ui->mdiArea, &QMdiArea::subWindowActivated, this, &MainWindow::functionUpdate);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -81,7 +87,8 @@ QMdiSubWindow *MainWindow::findChildWindow(const QString &fileName) const
 {
     QString canonicalFilePath = QFileInfo(fileName).canonicalFilePath();
 
-    foreach (QMdiSubWindow *window, ui->mdiArea->subWindowList()) {
+    foreach (QMdiSubWindow *window, ui->mdiArea->subWindowList())
+    {
         ChildWindow *childwindow = qobject_cast<ChildWindow *>(window->widget());
         if (childwindow->getCurFile() == canonicalFilePath)
         {
@@ -93,10 +100,24 @@ QMdiSubWindow *MainWindow::findChildWindow(const QString &fileName) const
 
 void MainWindow::functionUpdate()
 {
-    bool childSelection = (currentChildWindow() && currentChildWindow()->document()->isModified());
-    ui->actionCut->setEnabled(childSelection);
-    ui->actionCopy->setEnabled(childSelection);
-    ui->actionPaste->setEnabled(childSelection);
+    if(currentChildWindow())
+    {
+        bool childHasSelection = (currentChildWindow() != 0);
+        ui->actionPaste->setEnabled(childHasSelection);
+
+        bool childTextSelection = (currentChildWindow() && currentChildWindow()->textCursor().hasSelection());
+        ui->actionCut->setEnabled(childTextSelection);
+        ui->actionCopy->setEnabled(childTextSelection);
+        qDebug() << childTextSelection;
+    }
+    else
+    {
+//            bool parentSelection = (parentWindow() != 0);
+//            ui->actionPaste->setEnabled(parentSelection);
+
+//            bool parentTextSelection = (parentWindow() && ui->mdiArea->parentWidget()->
+
+    }
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -104,12 +125,10 @@ void MainWindow::on_actionNew_triggered()
     ChildWindow *child = new ChildWindow;
 
     ui->mdiArea->addSubWindow(child);
+
     child->newFile(fileIndex++);
     child->showMaximized();
     child->show();
-
-    connect(child->document(), &QTextDocument::contentsChanged, this, &MainWindow::functionUpdate);
-
 }
 
 void MainWindow::on_actionSave_triggered()
@@ -158,12 +177,20 @@ void MainWindow::on_actionPaste_triggered()
 
 void MainWindow::on_actionTestbutton_triggered()
 {
-    if (QMdiSubWindow *activeSubWindow = ui->mdiArea->activeSubWindow())
+    if(ui->mdiArea->activeSubWindow())
     {
         qDebug() << "child detect";
     }
     else
     {
-        qDebug() << "detect fail";
+        qDebug() << "child detect fail";
+    }
+    if (currentChildWindow() && currentChildWindow()->textCursor().hasSelection())
+    {
+        qDebug() << "child text selection";
+    }
+    else
+    {
+        qDebug() << "child not selection";
     }
 }

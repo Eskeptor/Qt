@@ -191,6 +191,11 @@
    </property>
   </action>
   <action name="actionSave_As">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/images/images/saveas.png</normaloff>
+     <disabledoff>:/images/images/saveas_dis.png</disabledoff>:/images/images/saveas.png</iconset>
+   </property>
    <property name="text">
     <string>다른 이름으로 저장</string>
    </property>
@@ -199,6 +204,11 @@
    </property>
   </action>
   <action name="actionClose">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/images/images/close.png</normaloff>
+     <disabledoff>:/images/images/close_dis.png</disabledoff>:/images/images/close.png</iconset>
+   </property>
    <property name="text">
     <string>닫기</string>
    </property>
@@ -424,6 +434,11 @@
   <action name="actionTestbutton">
    <property name="text">
     <string>Testbutton</string>
+   </property>
+  </action>
+  <action name="actionTestbutton2">
+   <property name="text">
+    <string>Testbutton2</string>
    </property>
   </action>
  </widget>

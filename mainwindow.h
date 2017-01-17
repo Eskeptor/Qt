@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QtWidgets>
 #include <QDebug>
+#include <QClipboard>
 
 class QMdiSubWindow;
 class ChildWindow;
@@ -18,7 +19,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = 0);
+    MainWindow(/*QWidget *parent = 0*/);
     ~MainWindow();
     bool openFile(const QString &fileName);
     void init();
@@ -39,6 +40,7 @@ private:
     bool loadFile(const QString &fileName);
     QMdiSubWindow *findChildWindow(const QString &fileName) const;
     ChildWindow *currentChildWindow() const;
+    QWidget *parentWindow() const;
     void functionUpdate();
 
 protected:

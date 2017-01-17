@@ -1,5 +1,5 @@
 <RCC>
-    <qresource lang="kr" prefix="/images">
+    <qresource prefix="/images" lang="kr">
         <file>images/copy.png</file>
         <file>images/cut.png</file>
         <file>images/new.png</file>
@@ -16,8 +16,12 @@
         <file>images/redo_dis.png</file>
         <file>images/save_dis.png</file>
         <file>images/undo_dis.png</file>
+        <file>images/saveas.png</file>
+        <file>images/saveas_dis.png</file>
+        <file>images/close.png</file>
+        <file>images/close_dis.png</file>
     </qresource>
-    <qresource lang="all" prefix="/etc">
+    <qresource prefix="/etc" lang="all">
         <file>README.md</file>
         <file>License.txt</file>
         <file>OriginalLicense.txt</file>
